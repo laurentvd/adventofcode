@@ -1,0 +1,13 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 4,
+  "singleQuote": true,
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^\\.\\.\\/",
+    "^\\.\\/.*(?<!(css|svg))$",
+    "^\\.\\/.*(svg|css)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
