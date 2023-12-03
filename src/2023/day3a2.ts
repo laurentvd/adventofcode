@@ -8,16 +8,8 @@ const isSymbol = (char: string): boolean => {
     return char !== '.' && !isNumber(char);
 };
 
-const hasAdjacentSymbol = (
-    rowIndex: number,
-    charIndex: number,
-    input: string[]
-): boolean => {
-    for (
-        let i = Math.max(0, rowIndex - 1);
-        i <= Math.min(rowIndex + 1, input.length - 1);
-        i++
-    ) {
+const hasAdjacentSymbol = (rowIndex: number, charIndex: number, input: string[]): boolean => {
+    for (let i = Math.max(0, rowIndex - 1); i <= Math.min(rowIndex + 1, input.length - 1); i++) {
         const row = input[i];
         for (
             let j = Math.max(0, charIndex - 1);

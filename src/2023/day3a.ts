@@ -23,10 +23,7 @@ const unique = <T extends IndexTuple>(array: T[]): T[] => {
     });
 };
 
-const filterAdjacentIndexes = (
-    indexes: IndexTuple[],
-    otherIndexes: IndexTuple[]
-): IndexTuple[] => {
+const filterAdjacentIndexes = (indexes: IndexTuple[], otherIndexes: IndexTuple[]): IndexTuple[] => {
     return indexes.filter((index) => {
         let [start, end] = index;
 
@@ -46,9 +43,7 @@ const filterAdjacentIndexes = (
     });
 };
 
-const filterNumberIndexesAdjacentToSymbol = (
-    analysis: Analysis
-): IndexTuple[] => {
+const filterNumberIndexesAdjacentToSymbol = (analysis: Analysis): IndexTuple[] => {
     const filtered: IndexTuple[] = [];
 
     for (let rowIndex = 0; rowIndex < analysis.length; rowIndex++) {
@@ -57,25 +52,16 @@ const filterNumberIndexesAdjacentToSymbol = (
         const nextRow = analysis[rowIndex + 1] ?? undefined;
 
         // Check which numbers are adjacent to symbols in the current row
-        const matching = filterAdjacentIndexes(
-            currentRow.numberIndexes,
-            currentRow.symbolIndexes
-        );
+        const matching = filterAdjacentIndexes(currentRow.numberIndexes, currentRow.symbolIndexes);
 
         // Check which numbers are adjacent to symbols in the next row
         const matchingNext = nextRow
-            ? filterAdjacentIndexes(
-                  currentRow.numberIndexes,
-                  nextRow.symbolIndexes
-              )
+            ? filterAdjacentIndexes(currentRow.numberIndexes, nextRow.symbolIndexes)
             : [];
 
         // Check which numbers are adjacent to symbols in the previous row
         const matchingPrevious = previousRow
-            ? filterAdjacentIndexes(
-                  currentRow.numberIndexes,
-                  previousRow.symbolIndexes
-              )
+            ? filterAdjacentIndexes(currentRow.numberIndexes, previousRow.symbolIndexes)
             : [];
 
         const all = [...matching, ...matchingNext, ...matchingPrevious];
@@ -89,10 +75,7 @@ const filterNumberIndexesAdjacentToSymbol = (
 const indexesForRegex = (regex: RegExp, line: string): IndexTuple[] => {
     const matches = [...line.matchAll(regex)];
 
-    return matches.map(
-        (match) =>
-            [match.index, match.index! + match[0].length - 1] as IndexTuple
-    );
+    return matches.map((match) => [match.index, match.index! + match[0].length - 1] as IndexTuple);
 };
 
 async function run() {
@@ -105,8 +88,7 @@ async function run() {
         return { numberIndexes, symbolIndexes };
     });
 
-    const filteredAnalysis: Analysis =
-        filterNumberIndexesAdjacentToSymbol(analysis);
+    const filteredAnalysis: Analysis = filterNumberIndexesAdjacentToSymbol(analysis);
 
     // console.log(filteredAnalysis);
 

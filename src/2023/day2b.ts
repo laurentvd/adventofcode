@@ -23,10 +23,7 @@ const reduceMaxSet = (draws: Set[]): Set => {
 
     draws.forEach((draw) => {
         Object.keys(draw).forEach((color) => {
-            max[color as keyof Set] = Math.max(
-                max[color as keyof Set],
-                draw[color as keyof Set]
-            );
+            max[color as keyof Set] = Math.max(max[color as keyof Set], draw[color as keyof Set]);
         });
     });
 

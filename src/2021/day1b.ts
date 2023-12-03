@@ -1,4 +1,4 @@
-import loadInput from "../shared/loadInput.ts";
+import loadInput from '../shared/loadInput.ts';
 
 function sumPreviousThree(input: Array<number>, index: number): number {
     if (index < 2) {
@@ -10,7 +10,7 @@ function sumPreviousThree(input: Array<number>, index: number): number {
 
 async function run() {
     const input = await loadInput('./2021/input/day1.txt');
-    const inputInts = input.map(v => parseInt(v));
+    const inputInts = input.map((v) => parseInt(v));
 
     let higherCount = 0;
     for (let i = 3; i < inputInts.length; i++) {

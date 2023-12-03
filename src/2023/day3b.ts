@@ -9,11 +9,7 @@ const hasAdjacentAsterisk = (
     charIndex: number,
     input: string[]
 ): [number, number] | undefined => {
-    for (
-        let i = Math.max(0, rowIndex - 1);
-        i <= Math.min(rowIndex + 1, input.length - 1);
-        i++
-    ) {
+    for (let i = Math.max(0, rowIndex - 1); i <= Math.min(rowIndex + 1, input.length - 1); i++) {
         const row = input[i];
         for (
             let j = Math.max(0, charIndex - 1);
@@ -51,9 +47,7 @@ async function run() {
                     const key = `${adjacentAsteriskCoordinates[0]},${adjacentAsteriskCoordinates[1]}`;
 
                     if (asteriskPositions[key] !== undefined) {
-                        console.log(
-                            `${asteriskPositions[key]} * ${parseInt(number)}`
-                        );
+                        console.log(`${asteriskPositions[key]} * ${parseInt(number)}`);
 
                         numbers.push(asteriskPositions[key] * parseInt(number));
                         // continue;
@@ -73,11 +67,7 @@ async function run() {
 
             numberStart = numberStart ?? charIndex;
             if (!adjacentAsteriskCoordinates) {
-                const asteriskPosition = hasAdjacentAsterisk(
-                    rowIndex,
-                    charIndex,
-                    input
-                );
+                const asteriskPosition = hasAdjacentAsterisk(rowIndex, charIndex, input);
 
                 if (asteriskPosition !== undefined) {
                     adjacentAsteriskCoordinates = asteriskPosition;

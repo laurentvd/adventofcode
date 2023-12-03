@@ -1,4 +1,4 @@
-import loadInput from "../shared/loadInput.ts";
+import loadInput from '../shared/loadInput.ts';
 
 async function run() {
     const input = await loadInput('./2021/input/day1.txt');
