@@ -1,5 +1,5 @@
 async function loadInput(path: string) {
-    const response = await fetch(path);
+    const response = Bun.file(path);
 
     return (await response.text()).split('\n');
 }

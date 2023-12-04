@@ -23,7 +23,7 @@ async function run() {
     });
 
     const sum = digits.reduce((acc, digit) => acc + digit, 0);
-    console.log(sum);
+    console.log('Day 1 part 2: ', sum);
 }
 
 run();

@@ -47,10 +47,7 @@ async function run() {
                     const key = `${adjacentAsteriskCoordinates[0]},${adjacentAsteriskCoordinates[1]}`;
 
                     if (asteriskPositions[key] !== undefined) {
-                        console.log(`${asteriskPositions[key]} * ${parseInt(number)}`);
-
                         numbers.push(asteriskPositions[key] * parseInt(number));
-                        // continue;
                     }
 
                     asteriskPositions[key] = parseInt(number);
@@ -90,7 +87,10 @@ async function run() {
         }
     }
 
-    console.log(numbers.reduce((a, b) => a + b, 0));
+    console.log(
+        'Day 3 part 2: ',
+        numbers.reduce((a, b) => a + b, 0)
+    );
 }
 
 run();

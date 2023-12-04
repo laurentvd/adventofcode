@@ -22,7 +22,10 @@ async function run() {
         return 2 ** (matchingNumbers.length - 1);
     });
 
-    console.log(pointsPerCard.reduce((a, b) => a + b, 0));
+    console.log(
+        'Day 4 part 1: ',
+        pointsPerCard.reduce((a, b) => a + b, 0)
+    );
 }
 
 run();

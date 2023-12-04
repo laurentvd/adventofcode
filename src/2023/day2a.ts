@@ -43,7 +43,7 @@ async function run() {
     });
 
     const sum = games.reduce((acc, id) => acc + id, 0);
-    console.log(sum);
+    console.log('Day 2 part 1: ', sum);
 }
 
 run();

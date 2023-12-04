@@ -1,99 +1,80 @@
 import loadInput from '../shared/loadInput.ts';
 
-type IndexTuple = [number, number];
-type Analysis = LineAnalysis[];
-
-type LineAnalysis = {
-    numberIndexes: IndexTuple[];
-    symbolIndexes: IndexTuple[];
+const isNumber = (char: string): boolean => {
+    return !isNaN(parseInt(char));
 };
 
-const numberMatch = /(\d+)/g;
-const symbolMatch = /([^\d.])/g;
+const isSymbol = (char: string): boolean => {
+    return char !== '.' && !isNumber(char);
+};
 
-const unique = <T extends IndexTuple>(array: T[]): T[] => {
-    return array.filter((value, index) => {
-        return !array.find((other, index2) => {
-            if (index <= index2) {
-                return false;
+const hasAdjacentSymbol = (rowIndex: number, charIndex: number, input: string[]): boolean => {
+    for (let i = Math.max(0, rowIndex - 1); i <= Math.min(rowIndex + 1, input.length - 1); i++) {
+        const row = input[i];
+        for (
+            let j = Math.max(0, charIndex - 1);
+            j <= Math.min(charIndex + 1, row.length - 1);
+            j++
+        ) {
+            const char = row[j];
+            if (isSymbol(char)) {
+                return true;
             }
-
-            return value[0] === other[0] && value[1] === other[1];
-        });
-    });
-};
-
-const filterAdjacentIndexes = (indexes: IndexTuple[], otherIndexes: IndexTuple[]): IndexTuple[] => {
-    return indexes.filter((index) => {
-        let [start, end] = index;
-
-        if (start > 0) {
-            start--;
         }
-
-        end++;
-
-        return otherIndexes.some(([otherStart, otherEnd]) => {
-            if (otherStart <= start) {
-                return otherEnd >= start;
-            } else {
-                return otherStart <= end;
-            }
-        });
-    });
-};
-
-const filterNumberIndexesAdjacentToSymbol = (analysis: Analysis): IndexTuple[] => {
-    const filtered: IndexTuple[] = [];
-
-    for (let rowIndex = 0; rowIndex < analysis.length; rowIndex++) {
-        const currentRow = analysis[rowIndex];
-        const previousRow = analysis[rowIndex - 1] ?? undefined;
-        const nextRow = analysis[rowIndex + 1] ?? undefined;
-
-        // Check which numbers are adjacent to symbols in the current row
-        const matching = filterAdjacentIndexes(currentRow.numberIndexes, currentRow.symbolIndexes);
-
-        // Check which numbers are adjacent to symbols in the next row
-        const matchingNext = nextRow
-            ? filterAdjacentIndexes(currentRow.numberIndexes, nextRow.symbolIndexes)
-            : [];
-
-        // Check which numbers are adjacent to symbols in the previous row
-        const matchingPrevious = previousRow
-            ? filterAdjacentIndexes(currentRow.numberIndexes, previousRow.symbolIndexes)
-            : [];
-
-        const all = [...matching, ...matchingNext, ...matchingPrevious];
-
-        filtered.push(unique(all));
     }
 
-    return filtered;
-};
-
-const indexesForRegex = (regex: RegExp, line: string): IndexTuple[] => {
-    const matches = [...line.matchAll(regex)];
-
-    return matches.map((match) => [match.index, match.index! + match[0].length - 1] as IndexTuple);
+    return false;
 };
 
 async function run() {
-    const input = await loadInput('./input/2023/day3simple.txt');
+    const input = await loadInput('./input/2023/day3.txt');
+    const numbers: Array<number> = [];
 
-    const analysis: Analysis = input.map((line): LineAnalysis => {
-        const numberIndexes = indexesForRegex(numberMatch, line);
-        const symbolIndexes = indexesForRegex(symbolMatch, line);
+    for (let rowIndex = 0; rowIndex < input.length; rowIndex++) {
+        const line = input[rowIndex];
+        let numberStart: number | undefined = undefined;
+        let foundAdjacentSymbol = false;
 
-        return { numberIndexes, symbolIndexes };
-    });
+        for (let charIndex = 0; charIndex < line.length; charIndex++) {
+            const char = line[charIndex];
+            const isNum = isNumber(char);
 
-    const filteredAnalysis: Analysis = filterNumberIndexesAdjacentToSymbol(analysis);
+            // End of number sequence
+            if (numberStart !== undefined && !isNum) {
+                const number = line.slice(numberStart, charIndex);
+                if (foundAdjacentSymbol) {
+                    numbers.push(parseInt(number));
+                }
 
-    // console.log(filteredAnalysis);
+                // Start new number sequence
+                numberStart = undefined;
+                foundAdjacentSymbol = false;
+            }
 
-    // const sum = analysis.reduce((acc, value) => acc + value.sum, 0);
-    // console.log(sum);
+            if (!isNumber(char)) {
+                continue;
+            }
+
+            numberStart = numberStart ?? charIndex;
+            if (!foundAdjacentSymbol) {
+                if (hasAdjacentSymbol(rowIndex, charIndex, input)) {
+                    foundAdjacentSymbol = true;
+                }
+            }
+        }
+
+        if (numberStart !== undefined) {
+            const number = line.slice(numberStart);
+            if (foundAdjacentSymbol) {
+                numbers.push(parseInt(number));
+            }
+        }
+    }
+
+    console.log(
+        'Day 3 part 1: ',
+        numbers.reduce((a, b) => a + b, 0)
+    );
 }
 
 run();

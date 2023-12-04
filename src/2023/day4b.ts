@@ -33,7 +33,9 @@ async function run() {
         return count;
     };
 
-    console.log(scoresPerCard.reduce((acc, cur, index) => acc + countCardsRecursively(index), 0));
+    const sum = scoresPerCard.reduce((acc, cur, index) => acc + countCardsRecursively(index), 0);
+
+    console.log('Day 4 part 2: ', sum);
 }
 
 run();
