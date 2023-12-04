@@ -9,7 +9,7 @@ function sumPreviousThree(input: Array<number>, index: number): number {
 }
 
 async function run() {
-    const input = await loadInput('./2021/input/day1.txt');
+    const input = await loadInput('./input/2021/day1.txt');
     const inputInts = input.map((v) => parseInt(v));
 
     let higherCount = 0;

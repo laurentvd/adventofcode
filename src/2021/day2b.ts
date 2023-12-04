@@ -1,7 +1,7 @@
 import loadInput from '../shared/loadInput.ts';
 
 async function run() {
-    const input = await loadInput('./2021/input/day2.txt');
+    const input = await loadInput('./input/2021/day2.txt');
 
     let aim = 0;
     let horizontal = 0;
