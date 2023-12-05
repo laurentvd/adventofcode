@@ -1,4 +1,4 @@
-import loadInput from '../shared/loadInput.ts';
+import loadInputAsLines from '../shared/loadInputAsLines.ts';
 
 const stringToNumbersArray = (str: string) =>
     str
@@ -7,7 +7,7 @@ const stringToNumbersArray = (str: string) =>
         .filter((n) => !isNaN(n));
 
 async function run() {
-    const input = await loadInput('./input/2023/day4.txt');
+    const input = await loadInputAsLines('./input/2023/day4.txt');
     const scoresPerCard = input.map((line) => {
         const [id, numbers] = line.split(': ');
         const [winningNumbersStr, allNumbersStr] = numbers.split(' | ');

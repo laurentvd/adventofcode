@@ -1,4 +1,4 @@
-import loadInput from '../shared/loadInput.ts';
+import loadInputAsLines from '../shared/loadInputAsLines.ts';
 
 const arrayOfBinaryNumbersToDecimalNumber = (arrayOfBinaryNumbers: number[]) => {
     return arrayOfBinaryNumbers.reduce((acc, curr) => {
@@ -7,9 +7,9 @@ const arrayOfBinaryNumbersToDecimalNumber = (arrayOfBinaryNumbers: number[]) => 
 };
 
 async function run() {
-    const input = await loadInput('./input/2021/day3.txt');
+    const input = await loadInputAsLines('./input/2021/day3.txt');
 
-    const oneCountPerPosition: { [index: string]: number } = Object.assign(
+    const oneCountPerPosition = Object.assign(
         {},
         input[0].split('').map(() => 0)
     );

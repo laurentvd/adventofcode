@@ -1,7 +1,7 @@
-import loadInput from '../shared/loadInput.ts';
+import loadInputAsLines from '../shared/loadInputAsLines.ts';
 
 async function run() {
-    const input = await loadInput('./input/2021/day2.txt');
+    const input = await loadInputAsLines('./input/2021/day2.txt');
 
     let horizontal = 0;
     let depth = 0;

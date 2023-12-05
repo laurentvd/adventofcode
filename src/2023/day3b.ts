@@ -1,4 +1,4 @@
-import loadInput from '../shared/loadInput.ts';
+import loadInputAsLines from '../shared/loadInputAsLines.ts';
 
 const isNumber = (char: string): boolean => {
     return !isNaN(parseInt(char));
@@ -27,7 +27,7 @@ const hasAdjacentAsterisk = (
 };
 
 async function run() {
-    const input = await loadInput('./input/2023/day3.txt');
+    const input = await loadInputAsLines('./input/2023/day3.txt');
     const numbers: Array<number> = [];
     const asteriskPositions: Record<string, number> = {};
 

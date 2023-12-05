@@ -1,4 +1,4 @@
-import loadInput from '../shared/loadInput.ts';
+import loadInputAsLines from '../shared/loadInputAsLines.ts';
 
 const numbers = {
     zero: 0,
@@ -56,7 +56,7 @@ const lastNumber = (line: string) => {
 };
 
 async function run() {
-    const input = await loadInput('./input/2023/day1.txt');
+    const input = await loadInputAsLines('./input/2023/day1.txt');
 
     const digits = input.map((line) => {
         let firstDigit = firstNumber(line);

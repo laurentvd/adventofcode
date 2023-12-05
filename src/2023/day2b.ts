@@ -1,4 +1,4 @@
-import loadInput from '../shared/loadInput.ts';
+import loadInputAsLines from '../shared/loadInputAsLines.ts';
 
 type Set = { red: number; green: number; blue: number };
 
@@ -31,7 +31,7 @@ const reduceMaxSet = (draws: Set[]): Set => {
 };
 
 async function run() {
-    const input = await loadInput('./input/2023/day2.txt');
+    const input = await loadInputAsLines('./input/2023/day2.txt');
 
     const games = input.map((line) => {
         const [game, draws] = line.split(': ');
