@@ -20,6 +20,8 @@ type Card = (typeof cards)[number];
 
 type CardCombination = [Card, Card, Card, Card, Card];
 
+type CardCount = Record<Card, number>;
+
 enum CombinationType {
     FiveOfAKind = 7,
     FourOfAKind = 6,
@@ -42,44 +44,71 @@ const parseCombination = (combination: string): CardCombination => {
         .map((card) => card[0] as Card) as CardCombination;
 };
 
+const cardWithCountOf = (
+    cardCount: CardCount,
+    count: number,
+    skip?: Card
+): Card | undefined => {
+    for (const cardCountKey in cardCount) {
+        if (
+            cardCount[cardCountKey as Card] === count &&
+            cardCountKey !== skip
+        ) {
+            return cardCountKey as Card;
+        }
+    }
+
+    return undefined;
+};
+
 const determineCombinationType = (cards: Card[]): CombinationType => {
+    const countPerCardWithoutJoker: CardCount = {};
+    const countPerCardWithJoker: CardCount = {};
     const jokerCards = cards.filter((card) => card === 'J').length;
 
-    const countPerCard = cards.reduce(
-        (acc, card) => {
-            if (card === 'J') {
-                acc[card] = (acc[card] || 0) + 1;
-            } else {
-                acc[card] = (acc[card] || jokerCards) + 1;
-            }
-
-            return acc;
-        },
-        {} as Record<Card, number>
-    );
-
-    const counts = Object.values(countPerCard);
-    if (counts.includes(5)) {
+    if (jokerCards === 5) {
         return CombinationType.FiveOfAKind;
     }
 
-    if (counts.includes(4)) {
+    cards.forEach((card) => {
+        countPerCardWithoutJoker[card] =
+            (countPerCardWithoutJoker[card] || 0) + 1;
+
+        countPerCardWithJoker[card] =
+            (countPerCardWithJoker[card] || jokerCards) + 1;
+
+        countPerCardWithJoker['J'] = 0;
+        countPerCardWithoutJoker['J'] = 0;
+    });
+
+    let card = cardWithCountOf(countPerCardWithJoker, 5);
+    let secondaryCard: Card | undefined = undefined;
+    if (card) {
+        return CombinationType.FiveOfAKind;
+    }
+
+    card = cardWithCountOf(countPerCardWithJoker, 4);
+    if (card) {
         return CombinationType.FourOfAKind;
     }
 
-    if (counts.includes(3) && counts.includes(2)) {
+    card = cardWithCountOf(countPerCardWithJoker, 3);
+    secondaryCard = cardWithCountOf(countPerCardWithoutJoker, 2, card);
+    if (card && secondaryCard) {
         return CombinationType.FullHouse;
     }
 
-    if (counts.includes(3)) {
+    if (card) {
         return CombinationType.ThreeOfAKind;
     }
 
-    if (counts.filter((count) => count === 2).length === 2) {
+    card = cardWithCountOf(countPerCardWithJoker, 2);
+    secondaryCard = cardWithCountOf(countPerCardWithoutJoker, 2, card);
+    if (card && secondaryCard) {
         return CombinationType.TwoPairs;
     }
 
-    if (counts.includes(2)) {
+    if (card) {
         return CombinationType.OnePair;
     }
 
